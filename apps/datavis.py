@@ -89,7 +89,18 @@ def plot_poluentes(station, pollutant):
                 axs.grid(linestyle='dashed', alpha=.3)
                 st.pyplot(fig)
 
-        
+def plot_time_series(start_date, end_date, pollutant, station):
+    dataframe_filtered = dataframe.copy()
+    if 'Todos' not in pollutant: dataframe_filtered = dataframe_filtered[dataframe_filtered['Poluente'].apply(lambda x: x in pollutant)]
+    if 'Todas' not in pollutant: dataframe_filtered = dataframe_filtered[dataframe_filtered['Estacao'].apply(lambda x: x in station)]
+    dataframe_filtered = dataframe_filtered[dataframe_filtered['Data'].apply(lambda x: start_date <= x.date() <= end_date)]
+    fig, axs = plt.subplots(1,1, figsize=(7, 2.625))
+    for poluente in dataframe_filtered.groupby('Poluente'):
+        for estacao in poluente[-1].groupby('Estacao'):
+            axs.plot(np.unique(estacao[-1]['Data']), estacao[-1].groupby('Data')['Valor'].mean(), linestyle='-')
+    return fig
+    
+
 def app():
     st.title("Visulização dos Poluentes")
     st.header("Distribuição de Dados")
@@ -108,3 +119,5 @@ def app():
      'Selecione o período',
      options=[i.date() for i in pd.to_datetime(np.unique(dataframe['Data']))],
      value=(dataframe['Data'].min().date(), dataframe['Data'].max().date()))
+    fig = plot_time_series(start_date, end_date, selected_pollutant, selected_station)
+    st.pyplot(fig)
