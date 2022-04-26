@@ -12,7 +12,7 @@ from apps.utils import make_cmap, map_val, moving_average
 #%%
 @st.cache(ttl=3600, show_spinner=True)
 def load_data():
-    databases = [i for i in os.listdir('data') if i.endswith('.csv')]
+    databases = [i for i in os.listdir('data') if i.endswith('.csv')][:4]
     df = pd.DataFrame()
     for database in databases:
         df = pd.concat([df, pd.read_csv('data/' + database, encoding='latin-1')])
