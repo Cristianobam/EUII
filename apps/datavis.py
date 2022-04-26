@@ -10,7 +10,7 @@ from scipy.stats import iqr
 from apps.utils import make_cmap, map_val, moving_average
 
 #%%
-@st.cache(ttl=3600, show_spinner=True)
+@st.cache(ttl=None, show_spinner=True, persist=True)
 def load_data():
     databases = [i for i in os.listdir('data') if i.endswith('.csv')][:4]
     df = pd.DataFrame()
@@ -21,7 +21,7 @@ def load_data():
 
 dataframe = load_data()
 
-@st.cache(ttl=3600, show_spinner=True)
+@st.cache(ttl=None, show_spinner=True)
 def station_colors():
     categorical = make_cmap([(100, 143, 255), (120, 94, 240), (220, 38, 127), (254,97,0), (255, 176, 0)], bit=True, cmap_name='grouping')
     stations = np.unique(dataframe['Estacao'])
@@ -53,10 +53,11 @@ def plot_time_series(filtered_df, window):
     for data in filtered_df.groupby('Poluente'):
         fig, ax = plt.subplots(1, 1, figsize=(12.8, 4))
         figs.append(fig)
-        for city in data[1].groupby('Estacao'):
+        for city in data[-1].groupby('Estacao'):
             dates = np.unique(city[-1]['Data'])[window-1:]
-            y_vals = city[-1].groupby('Data')['Valor'].median()
-            ax.plot(dates, moving_average(y_vals, window), linestyle='-', color=st_colors[city[0]], label=city[0])
+            if len(dates) > window:
+                y_vals = city[-1].groupby('Data')['Valor'].median()
+                ax.plot(dates, moving_average(y_vals, window), linestyle='-', color=st_colors[city[0]], label=city[0])
         ax.grid(linestyle='dashed', alpha=.3)
         ax.legend(loc='best')
         fig.suptitle(data[0])
