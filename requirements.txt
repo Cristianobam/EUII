@@ -1,0 +1,5 @@
+scipy
+pandas
+matplotlib
+pingouin
+streamlit_option_menu
