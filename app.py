@@ -33,7 +33,7 @@ with st.sidebar:
         """
         Dashboard do projeto de Sistema de monitoramento da Qualidade do Ar da disciplina de Engenharia Unificada II da Universidade Federal do ABC do Quadrimestre 2022.1
         
-        Source code: <https://github.com/thataaz/engenharia-unificada2-ufabc>
+        Source code: <https://github.com/Cristianobam/EUII>
     """
     )
 

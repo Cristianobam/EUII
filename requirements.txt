@@ -2,4 +2,5 @@ scipy
 pandas
 matplotlib
 pingouin
+streamlit
 streamlit_option_menu
