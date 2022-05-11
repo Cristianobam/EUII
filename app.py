@@ -1,10 +1,11 @@
 #%%
 import streamlit as st
 from streamlit_option_menu import option_menu
-from apps import download, datavis
+from apps import download, datavis, reference
 
 #%%
 apps = [
+    {"func": reference.app, "title": "Referências", "icon": "book"},
     {"func": datavis.app, "title": "Dashboard", "icon": "window-split"},
     {"func": download.app, "title": "Download", "icon": "cloud-download"},
 ]
