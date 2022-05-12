@@ -38,7 +38,9 @@ def reduce_memory(data_frame):
 #%%
 @st.cache(ttl=None, show_spinner=True, persist=True)
 def load_data():
-    databases = [i for i in os.listdir('data') if i.endswith('.csv')][:6]
+    databases = [i for i in os.listdir('data') if i.endswith('.csv')]
+    databases.sort()
+    databases = databases[-6:]
     df = pd.DataFrame()
     for database in databases:
         loaded_df = pd.read_csv('data/' + database)
